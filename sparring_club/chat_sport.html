@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700,300">
+    <!-- Importa la fuente Roboto con diferentes grosores. -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css">
+    <!-- Importa íconos de Material Design. -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400&family=Finger+Paint&display=swap"> 
+    <!-- Importa la fuente Epilogue y Finger Paint. -->
+    <meta charset="UTF-8">
+   <style>
+    * {
+    font-size: 1.3vw;
+    font-family: "Epilogue", sans-serif;
+    /* Estilo general para todos los elementos: tamaño de fuente y fuente por defecto. */
+}
+
+html {
+    --scrollbarBG: #fff;
+    --thumbBG: #90a4ae;
+    /* Variables CSS para personalizar el fondo y el color de la barra de desplazamiento. */
+}
+
+body {
+    background: #ccc;
+    /* Fondo gris claro para el cuerpo de la página. */
+}
+
+body .card {
+    height: 45vw;
+    width: 35vw;
+    background-color: white;
+    margin-left: 30vw;
+    margin-top: 5vw;
+    box-shadow: 2vw 2vw 12vw 3vw #ccc;
+    /* Estilo del contenedor de la tarjeta: tamaño, posición y sombra. */
+}
+
+body .card #header {
+    height: 5vw;
+    background: #000;
+    padding: 0vw;
+    /* Estilo del encabezado del chat: altura y color de fondo negro. */
+}
+
+body .card #header h1 {
+    color: #fff;
+    font-size: 2vw;
+    font-family: "Finger Paint", cursive;
+    padding: 1vw;
+    /* Estilo del título en el encabezado: color blanco, tamaño de fuente y padding. */
+}
+
+body .card #message-section::-webkit-scrollbar {
+    width: 10px;
+    /* Ancho de la barra de desplazamiento en la sección de mensajes (solo en navegadores WebKit). */
+}
+
+body .card #message-section {
+    height: 32vw;
+    padding: 0 2.5vw;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    /* Estilo para la sección de mensajes: altura, padding y configuración del scrollbar. */
+}
+
+body .card #message-section::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+    /* Fondo de la pista de la barra de desplazamiento (solo en navegadores WebKit). */
+}
+
+body .card #message-section::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+    /* Estilo del pulgar (thumb) de la barra de desplazamiento (solo en navegadores WebKit). */
+}
+
+body .card #message-section #bot,
+body .card #message-section #user {
+    position: relative;
+    bottom: 0;
+    min-height: 1.5vw;
+    border: 0.15vw solid #777;
+    background-color: #fff;
+    border-radius: 0px 1.5vw 1.5vw 1.8vw;
+    padding: 1vw;
+    margin: 1.5vw 0;
+    /* Estilo común para los mensajes del bot y del usuario: posición, borde, fondo y espaciado. */
+}
+
+body .card #message-section #user {
+    border: 1.5px solid #000;
+    border-radius: 1.5vw 0vw 1.5vw 1.8vw;
+    background-color: #000;
+    float: right;
+    /* Estilo específico para los mensajes del usuario: borde, color de fondo negro y alineación a la derecha. */
+}
+
+body .card #message-section #user #user-response {
+    color: #fff;
+    /* Estilo del texto del usuario: color blanco. */
+}
+
+body .card #message-section .message {
+    color: #000;
+    clear: both;
+    line-height: 1.2vw;
+    font-size: 1.2vw;
+    padding: 8px;
+    position: relative;
+    margin: 8px 0;
+    max-width: 85%;
+    word-wrap: break-word;
+    z-index: 2;
+    /* Estilo general para los mensajes: color, tamaño de fuente, padding y comportamiento responsivo. */
+}
+
+body .card #input-section {
+    z-index: 1;
+    padding: 0 2.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    overflow: hidden;
+    height: 6vw;
+    width: 100%;
+    /* Estilo para la sección de entrada de mensajes: disposición flexible, padding y tamaño. */
+}
+
+body .card #input-section input {
+    color: #000;
+    min-width: 0.5vw;
+    outline: none;
+    height: 5vw;
+    width: 26vw;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #000 0.1vw;
+    /* Estilo del campo de texto: color, tamaño, sin borde superior/izquierdo/derecho y borde inferior negro. */
+}
+
+body .card .send {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    flex: 0 0 auto;
+    margin-left: 1.4vw;
+    margin-right: 0vw;
+    padding: 0;
+    position: relative;
+    outline: none;
+    /* Estilo del botón de enviar: fondo transparente, sin borde, cursor pointer y disposición flexible. */
+}
+
+body .card .send .circle {
+    position: relative;
+    width: 4.8vw;
+    height: 4.8vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Estilo del círculo que contiene el ícono de enviar: tamaño, disposición flexible. */
+}
+
+body .card .send .circle i {
+    font-size: 3vw;
+    margin-left: -1vw;
+    margin-top: 1vw;
+    /* Estilo del ícono de enviar dentro del círculo: tamaño de fuente y márgenes. */
+}
+   </style>
+</head>
+
+<body>
+    <div class="card">
+        <!-- Contenedor principal de la tarjeta de chat. -->
+        <div id="header">
+            <!-- Sección del encabezado del chat. -->
+            <h1>Chatter box!</h1>
+            <!-- Título del chat. -->
+        </div>
+        <div id="message-section">
+            <!-- Sección donde se mostrarán los mensajes del chat. -->
+            <div class="message" id="bot"><span id="bot-response">Hello.. I'm listening! Go on..</span></div>
+            <!-- Mensaje inicial del bot. -->
+        </div>
+        <div id="input-section">
+            <!-- Sección de entrada de texto para el usuario. -->
+            <input id="input" type="text" placeholder="Type a message" autocomplete="off" autofocus="autofocus" />
+            <!-- Campo de texto para que el usuario escriba su mensaje. -->
+            <button class="send" onclick="sendMessage()">
+                <!-- Botón para enviar el mensaje. -->
+                <div class="circle"><i class="zmdi zmdi-mail-send"></i></div>
+                <!-- Ícono de enviar dentro del botón. -->
+            </button>
+        </div>
+    </div>
+    <script>
+        // Lista de posibles mensajes del usuario y respuestas del bot
+const userMessage = [
+    ["hi", "hey", "hello"],
+    ["sure", "yes", "no"],
+    ["are you genious", "are you nerd", "are you intelligent"],
+    ["i hate you", "i dont like you"],
+    ["how are you", "how is life", "how are things", "how are you doing"],
+    ["how is corona", "how is covid 19", "how is covid19 situation"],
+    ["what are you doing", "what is going on", "what is up"],
+    ["how old are you"],
+    ["who are you", "are you human", "are you bot", "are you human or bot"],
+    ["who created you", "who made you", "who is your creator"],
+    ["your name please", "your name", "may i know your name", "what is your name", "what call yourself"],
+    ["i love you"],
+    ["happy", "good", "fun", "wonderful", "fantastic", "cool", "very good"],
+    ["bad", "bored", "tired"],
+    ["help me", "tell me story", "tell me joke"],
+    ["ah", "ok", "okay", "nice", "welcome"],
+    ["thanks", "thank you"],
+    ["what should i eat today"],
+    ["bro"],
+    ["what", "why", "how", "where", "when"],
+    ["corona", "covid19", "coronavirus"],
+    ["you are funny"],
+    ["i dont know"],
+    ["boring"],
+    ["im tired", "i am tired", "my head hurts", "my head is aching"],
+    ["you are boring", "you are bad", "you are not good"],
+    ["you are smart", "you are intelligent", "you are smart"]
+];
+
+// Respuestas del bot correspondientes a los posibles mensajes del usuario
+const botReply = [
+    ["Hello!", "Hi!", "Hey!", "Hi there!"],
+    ["Yes?", "No?", "Of course!"],
+    ["Yes, I am a genius.", "You could say that.", "I'm intelligent."],
+    ["I'm sorry to hear that.", "Why don't you like me?"],
+    ["I'm good.", "Life's good.", "Things are going well.", "I'm doing well."],
+    ["It's getting better.", "The situation is improving.", "It's still serious, but there's hope."],
+    ["I'm here to chat with you.", "Just hanging out.", "Not much, you?"],
+    ["I don't have an age, I'm just a bot.", "Age is just a number, right?"],
+    ["I'm your friendly chatbot!", "I'm a bot, but a friendly one!", "I'm a bot created to chat with you."],
+    ["I was created by a developer.", "A developer made me.", "Someone who loves coding."],
+    ["You can call me ChatBot.", "My name is ChatBot.", "I'm called ChatBot."],
+    ["I love you too!", "That's sweet!"],
+    ["Glad you're happy!", "That's great to hear!", "Good to know you're having fun!"],
+    ["I'm sorry you're feeling bad.", "It's okay, things will get better.", "Take care of yourself."],
+    ["I'm here to help!", "Sure, let's hear it!", "I'll try my best!"],
+    ["I see.", "Alright.", "Okay."],
+    ["You're welcome!", "No problem!", "Glad to help!"],
+    ["How about some pizza?", "Maybe a sandwich?", "What do you feel like eating?"],
+    ["Yes, bro!", "What can I do for you, bro?", "Hey, bro!"],
+    ["That's a good question.", "Let me think...", "Hmm, I'm not sure."],
+    ["Stay safe.", "Wash your hands often.", "Wear a mask!"],
+    ["I'm glad you think so!", "I try my best to be funny."],
+    ["It's okay not to know everything.", "No worries!", "We can figure it out together."],
+    ["Let's do something fun!", "How about a game?", "Let's chat about something interesting."],
+    ["Take a break.", "Rest up!", "Hope you feel better soon."],
+    ["I can be better.", "I'm always learning.", "Let's try to make this fun!"],
+    ["Thank you!", "I appreciate that!", "You're smart too!"]
+];
+
+// Mensaje predeterminado si no hay coincidencias en los mensajes
+const defaultReply = ["I didn't quite catch that.", "Could you please repeat that?", "I'm not sure I understand."];
+
+// Escucha cuando se presiona la tecla "Enter" en el campo de entrada
+document.querySelector("#input").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        sendMessage(); // Llama a sendMessage() cuando se presiona "Enter"
+    }
+});
+
+// Envía el mensaje del usuario y genera la respuesta del bot
+function sendMessage() {
+    var userText = document.getElementById("input").value.toLowerCase();
+    // Obtiene el texto ingresado por el usuario y lo convierte a minúsculas
+    document.getElementById("input").value = ""; // Limpia el campo de entrada
+
+    // Muestra el mensaje del usuario en el chat
+    var userDiv = document.createElement("div");
+    userDiv.className = "message";
+    userDiv.id = "user";
+    userDiv.innerHTML = `<span id="user-response">${userText}</span>`;
+    document.getElementById("message-section").appendChild(userDiv);
+
+    // Genera la respuesta del bot
+    generateReply(userText);
+}
+
+// Genera la respuesta del bot basada en el mensaje del usuario
+function generateReply(userText) {
+    var botResponse = "";
+
+    for (var i = 0; i < userMessage.length; i++) {
+        for (var j = 0; j < userMessage[i].length; j++) {
+            if (userText.includes(userMessage[i][j])) {
+                var botReplyList = botReply[i];
+                botResponse = botReplyList[Math.floor(Math.random() * botReplyList.length)];
+                break; // Sale del bucle si encuentra una coincidencia
+            }
+        }
+    }
+
+    if (!botResponse) {
+        botResponse = defaultReply[Math.floor(Math.random() * defaultReply.length)];
+        // Usa una respuesta predeterminada si no hay coincidencias
+    }
+
+    displayBotResponse(botResponse);
+}
+
+// Muestra la respuesta del bot en el chat
+function displayBotResponse(response) {
+    var botDiv = document.createElement("div");
+    botDiv.className = "message";
+    botDiv.id = "bot";
+    botDiv.innerHTML = `<span id="bot-response">${response}</span>`;
+    document.getElementById("message-section").appendChild(botDiv);
+}
+
+
+    </script>
+</body>
+
+
+</html>

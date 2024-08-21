@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario con Eventos de Sparring</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            position: relative;
+        }
+
+        .calendar {
+            width: 315px;
+            height: 350px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .calendar-header button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .calendar-header button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        .calendar-body {
+            padding: 10px 10px 10px 10px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+
+        .calendar-body div {
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f4f4f4;
+            cursor: pointer;
+        }
+
+        .calendar-body div.event {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .calendar-body div:hover {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .day-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            max-height: 80%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            display: none;
+            z-index: 100;
+        }
+
+        .day-card-header {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-card-header button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .day-card-header button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        .day-card-body {
+            padding: 10px;
+        }
+
+        .day-card-body div {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+        .day-card-body div.event {
+            background-color: rgba(255, 0, 0, 0.1);
+            font-weight: bold;
+            color: red;
+        }
+
+        .day-card-body div.event a {
+            color: red;
+            text-decoration: none;
+        }
+
+        .event-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .event-detail button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: red;
+            font-size: 16px;
+            padding: 0;
+        }
+
+        .event-detail button:hover {
+            color: darkred;
+        }
+
+        /* Estilo para la tarjeta de sparring */
+        .sparring-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 70%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 200;
+        }
+
+        .sparring-card iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .sparring-card-header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 8px 0 8px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="calendar">
+    <div class="calendar-header">
+        <button id="prevMonth">‹</button>
+        <div id="currentMonth"></div>
+        <button id="nextMonth">›</button>
+    </div>
+    <div class="calendar-body" id="calendarDays"></div>
+</div>
+
+<div class="day-card" id="dayCard">
+    <div class="day-card-header">
+        <div id="dayCardTitle"></div>
+        <button id="closeDayCard">×</button>
+    </div>
+    <div class="day-card-body" id="dayCardBody"></div>
+</div>
+
+<div class="sparring-card" id="sparringCard">
+    <div class="sparring-card-header" id="closeSparringCard">×</div>
+    <iframe id="sparringIframe" src=""></iframe>
+</div>
+
+<script>
+    const currentMonthElement = document.getElementById('currentMonth');
+    const calendarDaysElement = document.getElementById('calendarDays');
+    const dayCard = document.getElementById('dayCard');
+    const dayCardTitle = document.getElementById('dayCardTitle');
+    const dayCardBody = document.getElementById('dayCardBody');
+    const closeDayCard = document.getElementById('closeDayCard');
+    const sparringCard = document.getElementById('sparringCard');
+    const sparringIframe = document.getElementById('sparringIframe');
+    const closeSparringCard = document.getElementById('closeSparringCard');
+
+    let currentDate = new Date();
+
+    // Ejemplo de eventos en el calendario
+    const events = {
+        '2024-08-01': [
+            {
+                title: 'Sparring',
+                participants: [
+                    { name: 'Boxeador 1', startTime: '10:00', endTime: '10:40' },
+                    { name: 'Boxeador 2', startTime: '14:00', endTime: '14:40' }
+                ]
+            }
+        ]
+    };
+
+    function renderCalendar(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        currentMonthElement.textContent = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Limpiar días anteriores
+        calendarDaysElement.innerHTML = '';
+
+        // Rellenar los días vacíos antes del primer día del mes
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            calendarDaysElement.innerHTML += '<div></div>';
+        }
+
+        // Rellenar los días del mes
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+            dayElement.textContent = day;
+
+            if (events[formattedDate]) {
+                dayElement.classList.add('event'); // Añadir clase si el día tiene un evento
+            }
+
+            dayElement.addEventListener('click', () => openDayCard(day, month + 1, year));
+            calendarDaysElement.appendChild(dayElement);
+        }
+    }
+
+    function openDayCard(day, month, year) {
+        const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        dayCardTitle.textContent = `${day}/${month}/${year}`;
+        dayCardBody.innerHTML = '';
+
+        if (events[formattedDate]) {
+            events[formattedDate].forEach(event => {
+                event.participants.forEach(participant => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.classList.add('event');
+
+                    const startTime = participant.startTime;
+                    const endTime = participant.endTime;
+                    const hour = startTime.split(':')[0];
+                    const minute = startTime.split(':')[1];
+                    const duration = calculateDuration(startTime, endTime);
+
+                    eventDiv.innerHTML = `
+                        <div class="event-detail">
+                            ${participant.name} (${startTime})
+                            <button onclick="openSparringCard('${participant.name}', '${hour}:${minute}', '${duration}')">👁</button>
+                        </div>
+                    `;
+
+                    const hourRow = document.getElementById(`hour-${hour}-${minute}`);
+                    if (hourRow) {
+                        hourRow.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
+                    }
+
+                    dayCardBody.appendChild(eventDiv);
+                });
+            });
+        }
+
+        dayCard.style.display = 'block';
+    }
+
+    function closeDayCardFunc() {
+        dayCard.style.display = 'none';
+    }
+
+    function openSparringCard(name, startTime, duration) {
+        sparringIframe.src = `sparring_details.html?name=${encodeURIComponent(name)}&startTime=${encodeURIComponent(startTime)}&duration=${encodeURIComponent(duration)}`;
+        sparringCard.style.display = 'block';
+    }
+
+    function closeSparringCardFunc() {
+        sparringCard.style.display = 'none';
+    }
+
+    function calculateDuration(startTime, endTime) {
+        const [startHour, startMinute] = startTime.split(':').map(Number);
+        const [endHour, endMinute] = endTime.split(':').map(Number);
+        const start = startHour * 60 + startMinute;
+        const end = endHour * 60 + endMinute;
+        return end - start;
+    }
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
+    });
+
+    closeDayCard.addEventListener('click', closeDayCardFunc);
+    closeSparringCard.addEventListener('click', closeSparringCardFunc);
+
+    renderCalendar(currentDate);
+</script>
+</body>
+</html>

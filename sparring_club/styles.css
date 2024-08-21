@@ -1,0 +1,64 @@
+/* Estructura de la página */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.principal {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 90% 10%;
+}
+
+.superior {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.superior .interior {
+    width: 95%;
+    height: 95%;
+    background-color: lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inferior {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    background-color: white;
+}
+
+.inferior div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc7c76e;
+}
+
+button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.material-symbols-outlined {
+    font-size: 9vw;
+    color: red;
+}
+
+.inferior div.active .material-symbols-outlined {
+    font-size: 11vw;
+}

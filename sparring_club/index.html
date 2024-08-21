@@ -1,0 +1,126 @@
+
+
+
+
+
+<!--Modificado-->
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Div Principal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Desactiva el desplazamiento */
+        }
+        .principal {
+            width: 100%;
+            height: 100vh;
+            
+            border-radius: 5px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-rows: 90% 10%;
+        }
+        .superior {
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Para el posicionamiento relativo del div interior */
+        }
+        .superior .interior {
+            width: 95%;
+            height: 95%;
+            background-color: lightgray; /* Color de fondo para identificar el div interior */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .inferior {
+            
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* Divide en 6 columnas iguales */
+            background-color: white; /* Fondo blanco */
+        }
+        .inferior div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            /*border: 1px solid black; /* Borde para identificar cada parte */
+            background-color: #ccc7c76e; /* Color inicial */
+            transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+        }
+        .inferior div.active {
+            background-color: #aaa; /* Color gris más oscuro cuando está activo */
+        }
+        button {
+            background: transparent; /* Fondo transparente */
+            border: none;
+            cursor: pointer;
+            width: 50%; /* Ocupa el 50% del contenedor */
+            height: 50%; /* Ocupa el 50% del contenedor */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, font-size 0.3s ease; /* Transición suave para el color de fondo y tamaño de fuente */
+        }
+        
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+        .material-symbols-outlined {
+            font-size: 8vw; /* Usa unidades relativas a la ventana gráfica */
+            color: red; /* Color rojo para los iconos */
+            transition: font-size 0.3s ease; /* Transición suave para el tamaño de fuente */
+        }
+        .inferior div.active .material-symbols-outlined {
+            font-size: 10vw; /* Tamaño mayor para el ícono cuando el div está activo */
+        }
+    </style>
+</head>
+<body>
+    <div class="principal">
+        <div class="superior">
+            <div class="interior" id="content">
+                Parte Superior (90%) con Div Interior
+            </div>
+        </div>
+        <div class="inferior">
+            <div id="home" class="active" onclick="activateButton(this); loadHome();">
+                <button type="button"><span class="material-symbols-outlined">home</span></button>
+            </div>
+            <div id="event" onclick="activateButton(this); loadEvent();">
+                <button type="button"><span class="material-symbols-outlined">event</span></button>
+            </div>
+            <div id="sports_mma" onclick="activateButton(this); loadSportsMMA();">
+                <button type="button"><span class="material-symbols-outlined">sports_mma</span></button>
+            </div>
+            <div id="share" onclick="activateButton(this); loadShare();">
+                <button type="button"><span class="material-symbols-outlined">share</span></button>
+            </div>
+            <div id="chat" onclick="activateButton(this); loadChat();">
+                <button type="button"><span class="material-symbols-outlined">chat</span></button>
+            </div>
+            <div id="manage_accounts" onclick="activateButton(this); loadManageAccounts();">
+                <button type="button"><span class="material-symbols-outlined">manage_accounts</span></button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>

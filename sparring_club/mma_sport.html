@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas de Boxeadores</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+            font-size: 1.5em;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 1em;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pagination-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #page-number {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* Media Query para dispositivos móviles */
+        @media (max-width: 600px) {
+            .card img {
+                height: 150px;
+            }
+
+            .card h3 {
+                font-size: 1.2em;
+            }
+
+            .card p {
+                font-size: 0.9em;
+            }
+
+            .pagination-btn {
+                padding: 8px 15px;
+                margin: 0 5px;
+                font-size: 0.9em;
+            }
+
+            #page-number {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="cards-container" class="cards-container"></div>
+        <div class="pagination">
+            <button id="prev" class="pagination-btn">Anterior</button>
+            <span id="page-number">1</span>
+            <button id="next" class="pagination-btn">Siguiente</button>
+        </div>
+    </div>
+    <script>
+        const personas = [
+            { nombre: "Boxeador 1", peso: 72.5, categoria: "profesional", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 2", peso: 68.0, categoria: "amateur", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 3", peso: 75.3, categoria: "aficionado", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 4", peso: 80.2, categoria: "profesional", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 5", peso: 85.0, categoria: "amateur", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 6", peso: 90.1, categoria: "aficionado", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 7", peso: 95.4, categoria: "profesional", foto: "https://via.placeholder.com/250" },
+            { nombre: "Boxeador 8", peso: 70.5, categoria: "amateur", foto: "https://via.placeholder.com/250" }
+        ];
+
+        const cardsContainer = document.getElementById('cards-container');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const pageNumber = document.getElementById('page-number');
+
+        let currentPage = 1;
+        const cardsPerPage = 4;
+
+        function displayCards(page) {
+              // Desplazar automáticamente al principio de la página
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            cardsContainer.innerHTML = '';
+            const start = (page - 1) * cardsPerPage;
+            const end = start + cardsPerPage;
+            const paginatedItems = personas.slice(start, end);
+
+            paginatedItems.forEach(persona => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${persona.foto}" alt="${persona.nombre}">
+                    <h3>${persona.nombre}</h3>
+                    <p>Peso: ${persona.peso} kg</p>
+                    <p>Categoría: ${persona.categoria}</p>
+                `;
+                cardsContainer.appendChild(card);
+            });
+
+            pageNumber.textContent = page;
+        }
+
+        function updateButtons() {
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === Math.ceil(personas.length / cardsPerPage);
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayCards(currentPage);
+                updateButtons();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentPage < Math.ceil(personas.length / cardsPerPage)) {
+                currentPage++;
+                displayCards(currentPage);
+                updateButtons();
+            }
+        });
+
+        displayCards(currentPage);
+        updateButtons();
+    </script>
+</body>
+</html>
